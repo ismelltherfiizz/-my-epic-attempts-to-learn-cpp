@@ -1,5 +1,2 @@
 ﻿  LinkedList.cpp
-  Queue.cpp
-  Generating Code...
-C:\Users\mshkolnyy\Desktop\-my-epic-attempts-to-learn-cpp\LinkedList\Queue.cpp(12): warning C4715:  'Queue::Front': not all control paths return a value
   LinkedList.vcxproj -> C:\Users\mshkolnyy\Desktop\-my-epic-attempts-to-learn-cpp\Debug\LinkedList.exe

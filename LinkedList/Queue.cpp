@@ -4,11 +4,7 @@
 
 TYPE Queue::Front() const
 {
-	if (!MyLinkedList::isHeadEmpty()) 
-	{
 		return head->value;
-	}
-	else std::cout << "queue is empty";
 }
 
 

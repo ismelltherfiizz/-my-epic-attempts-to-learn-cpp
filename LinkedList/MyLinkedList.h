@@ -4,15 +4,18 @@ using TYPE = int;
 
 class MyLinkedList
 {
-private:
-	struct Node {
+protected:
+	struct Node
+	{
 		TYPE value;
 		Node* pNext;
 	};
+	Node* head;
+
 
 public:
-	Node* head;
 	MyLinkedList();
+	~MyLinkedList();
 	void PushFront(TYPE newValue);
 	void PopFront();
 	void PushBack(TYPE newValue);
@@ -21,8 +24,6 @@ public:
 	void Insert(int index, TYPE newValue);
 	virtual TYPE Get(int index) const;
 	void Display() const;
-	
-protected:
 	bool isHeadEmpty() const;
 	
 };

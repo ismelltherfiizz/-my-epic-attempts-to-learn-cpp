@@ -1,10 +1,26 @@
 #include "MyLinkedList.h"
 #include <iostream>
 
-MyLinkedList::MyLinkedList() {
+MyLinkedList::MyLinkedList() 
+{
 	head = nullptr;
 
 }
+
+MyLinkedList::~MyLinkedList()
+{
+	std::cout << "a\n";
+
+	Node* ptr;
+	ptr = head;
+	while (ptr != nullptr)
+	{
+		head = ptr->pNext;
+		delete ptr;
+		ptr = head;
+	}
+}
+
 void MyLinkedList::PushFront(TYPE newValue)
 {
 
@@ -30,12 +46,16 @@ void MyLinkedList::PushBack(TYPE newValue)
 
 	Node* ptr;
 	ptr = head;
-	if (head != nullptr) {
+	if (head != nullptr)
+	{
 		while (ptr->pNext != nullptr)
 		{
 			ptr = ptr->pNext;
 		}
-		if (ptr->pNext == nullptr) ptr->pNext = newNode;
+		if (ptr->pNext == nullptr)
+		{
+			ptr->pNext = newNode;
+		}
 	}
 	else head = newNode;
 
@@ -128,7 +148,11 @@ TYPE MyLinkedList::Get(int index) const
 			ptr = ptr->pNext;
 		}
 	}
-	else std::cout << "list is empty";
+	else
+	{
+		std::cout << "list is empty";
+		return -1;
+	}
 }
 
 void MyLinkedList::Display() const
@@ -146,7 +170,8 @@ void MyLinkedList::Display() const
 
 bool MyLinkedList::isHeadEmpty() const
 {
-	if (head == nullptr) {
+	if (head == nullptr)
+	{
 		return true;
 	}
 	else return false;
