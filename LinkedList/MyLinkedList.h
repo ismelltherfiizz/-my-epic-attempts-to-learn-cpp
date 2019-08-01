@@ -1,22 +1,30 @@
 #pragma once
-using TYPE = int;
-
-struct Node{
-	TYPE value;
-	Node* pNext;
-}; 
+using TYPE = int; 
 
 
 class MyLinkedList
 {
-public:
+private:
+	struct Node {
+		TYPE value;
+		Node* pNext;
+	};
 
-	void Push(TYPE value);
-	void Pop();
+public:
+	Node* head;
+	MyLinkedList();
+	void PushFront(TYPE newValue);
+	void PopFront();
+	void PushBack(TYPE newValue);
+	void PopBack();
 	void RemoveByValue(TYPE value);
-	void Insert(int index, TYPE value);
-	TYPE Get(int index);
-	void Display();
+	void Insert(int index, TYPE newValue);
+	virtual TYPE Get(int index) const;
+	void Display() const;
+	
+protected:
+	bool isHeadEmpty() const;
+	
 };
 
 
