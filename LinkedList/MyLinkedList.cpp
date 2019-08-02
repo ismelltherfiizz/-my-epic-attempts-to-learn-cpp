@@ -4,13 +4,37 @@
 MyLinkedList::MyLinkedList() 
 {
 	head = nullptr;
+}
+
+MyLinkedList::MyLinkedList(const MyLinkedList& source)
+{
+	*this = source;
 
 }
 
+MyLinkedList& MyLinkedList::operator=(const MyLinkedList& source)
+{
+	if(this == &source)
+	{
+		return *this;
+	}
+	if (source.head)
+	{
+		Node* ptr;
+		ptr = source.head;
+		while (ptr != nullptr)
+		{
+			this->PushBack(ptr->value);
+			ptr = ptr->pNext;
+		}
+	}
+	return *this; //?
+}
+
+
+
 MyLinkedList::~MyLinkedList()
 {
-	std::cout << "a\n";
-
 	Node* ptr;
 	ptr = head;
 	while (ptr != nullptr)
@@ -23,7 +47,6 @@ MyLinkedList::~MyLinkedList()
 
 void MyLinkedList::PushFront(TYPE newValue)
 {
-
 	Node* newNode = new Node();
 	newNode->value = newValue;
 	newNode->pNext = head;
@@ -32,19 +55,19 @@ void MyLinkedList::PushFront(TYPE newValue)
 
 void MyLinkedList::PopFront()
 {
-	Node* tempPtr;
-	tempPtr = head->pNext;
+	Node* ptr;
+	ptr = head->pNext;
 	delete head;
-	head = tempPtr;
+	head = ptr;
 }
 
 void MyLinkedList::PushBack(TYPE newValue)
 {
+	Node* ptr;
 	Node* newNode = new Node();
 	newNode->value = newValue;
 	newNode->pNext = nullptr;
 
-	Node* ptr;
 	ptr = head;
 	if (head != nullptr)
 	{
@@ -78,8 +101,8 @@ void MyLinkedList::PopBack()
 
 void MyLinkedList::Insert(int index, TYPE newValue)
 {
-	Node* newNode = new Node();
 	Node* ptr;
+	Node* newNode = new Node();
 	newNode->value = newValue;
 	ptr = head; 
 	for (int i = 0; ptr != nullptr; i++) 
@@ -134,7 +157,7 @@ void MyLinkedList::RemoveByValue(TYPE newValue)
 		ptr = ptr->pNext;
 	}
 }
-TYPE MyLinkedList::Get(int index) const
+TYPE MyLinkedList::Get(int index)  const
 {
 	Node* ptr;
 	if (head != nullptr)
@@ -157,7 +180,7 @@ TYPE MyLinkedList::Get(int index) const
 
 void MyLinkedList::Display() const
 {
-	 Node* ptr;
+	Node* ptr;
 	ptr = head;
 	while (ptr != nullptr) 
 	{

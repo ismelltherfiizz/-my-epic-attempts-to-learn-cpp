@@ -15,7 +15,10 @@ protected:
 
 public:
 	MyLinkedList();
+	MyLinkedList(const MyLinkedList &source);
 	~MyLinkedList();
+	MyLinkedList& operator=(const MyLinkedList& source);
+
 	void PushFront(TYPE newValue);
 	void PopFront();
 	void PushBack(TYPE newValue);
