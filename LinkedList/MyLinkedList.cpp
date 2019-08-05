@@ -93,10 +93,16 @@ MyLinkedList::~MyLinkedList()
 
 OwnIterator MyLinkedList::begin()
 {
-	if (head)
-	{
+
 		return head;
-	}
+	
+}
+
+OwnIterator MyLinkedList::begin() const
+{
+
+		return head;
+	
 }
 
 OwnIterator MyLinkedList::end()
@@ -107,11 +113,23 @@ OwnIterator MyLinkedList::end()
 	{
 		ptr = ptr->pNext;
 	}
-	if (ptr->pNext = nullptr)
-	{
+
 		return ptr;
+	
+
+}
+
+OwnIterator MyLinkedList::end() const
+{
+	Node* ptr;
+	ptr = head;
+	while (ptr->pNext != nullptr)
+	{
+		ptr = ptr->pNext;
 	}
 
+		return ptr;
+	
 }
 
 void MyLinkedList::PushFront(TYPE newValue)
@@ -264,10 +282,6 @@ void MyLinkedList::Display() const
 
 bool MyLinkedList::isHeadEmpty() const
 {
-	if (head == nullptr)
-	{
-		return true;
-	}
-	else return false;
+	return (head == nullptr);
 }
 
