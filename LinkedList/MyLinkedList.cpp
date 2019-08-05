@@ -1,15 +1,61 @@
 #include "MyLinkedList.h"
 #include <iostream>
 
+
+
+OwnIterator::OwnIterator(ValueType* p) :
+	p(p)
+{
+
+}
+
+OwnIterator::OwnIterator(const OwnIterator& it) :
+	p(it.p)
+{
+
+}
+
+bool OwnIterator::operator!=(OwnIterator const& other) const
+{
+	return p != other.p;
+}
+
+bool OwnIterator::operator==(OwnIterator const& other) const
+{
+	return p == other.p;
+}
+
+bool OwnIterator::operator>(OwnIterator const& other) const
+{
+	return p>other.p;
+}
+
+bool OwnIterator::operator<(OwnIterator const& other) const
+{
+	return p<other.p;
+}
+
+const int& OwnIterator::operator*() const
+{
+	return p->value;
+}
+
+OwnIterator& OwnIterator::operator++()
+{
+	p = p->pNext;
+	return *this;
+}
+
 MyLinkedList::MyLinkedList() 
 {
+	Node* ptr;
+	ptr = head;
 	head = nullptr;
 }
 
 MyLinkedList::MyLinkedList(const MyLinkedList& source)
 {
 	*this = source;
-
 }
 
 MyLinkedList& MyLinkedList::operator=(const MyLinkedList& source)
@@ -43,6 +89,29 @@ MyLinkedList::~MyLinkedList()
 		delete ptr;
 		ptr = head;
 	}
+}
+
+OwnIterator MyLinkedList::begin()
+{
+	if (head)
+	{
+		return head;
+	}
+}
+
+OwnIterator MyLinkedList::end()
+{
+	Node* ptr;
+	ptr = head;
+	while (ptr->pNext != nullptr)
+	{
+		ptr = ptr->pNext;
+	}
+	if (ptr->pNext = nullptr)
+	{
+		return ptr;
+	}
+
 }
 
 void MyLinkedList::PushFront(TYPE newValue)
@@ -111,6 +180,7 @@ void MyLinkedList::Insert(int index, TYPE newValue)
 		{
 			newNode->pNext = ptr->pNext;
 			ptr->pNext = newNode;
+			return;
 		}
 		ptr = ptr->pNext;
 	}
@@ -165,7 +235,8 @@ TYPE MyLinkedList::Get(int index)  const
 		ptr = head;
 		for (int i = 0; ptr != nullptr; i++)
 		{
-			if (i == index) {
+			if (i == index) 
+			{
 				return ptr->value;
 			}
 			ptr = ptr->pNext;
@@ -174,8 +245,8 @@ TYPE MyLinkedList::Get(int index)  const
 	else
 	{
 		std::cout << "list is empty";
-		return -1;
 	}
+		return -1;
 }
 
 void MyLinkedList::Display() const
@@ -199,3 +270,4 @@ bool MyLinkedList::isHeadEmpty() const
 	}
 	else return false;
 }
+

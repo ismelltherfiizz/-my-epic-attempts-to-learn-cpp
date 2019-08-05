@@ -5,8 +5,13 @@
 #include "MyLinkedList.h"
 #include "Queue.h"
 
+#include <algorithm>
+#include <list>
+
 int main()
 {
+	std::list<int> l;
+
 	MyLinkedList List;
 	MyLinkedList List1;
 	Queue* q = new Queue();
@@ -31,8 +36,22 @@ int main()
 	q->Display();
 	//q.Display();
 	//std::cout << List.Get(0) << std::endl << List.Get(1);
-	std::cout << "front is : " << q->Front();
+	std::cout << "front is : " << q->Front() << std::endl;
 	//delete List;
+
+	
+
+
+	int n1 = 15;
+	auto findResult = std::find(List.begin(), List.end(), n1);
+	if(findResult != nullptr)
+	{
+		std::cout << "list does have " << n1 << '\n';
+	}
+	else
+	{
+		std::cout << "list doesn't have " << n1 << '\n';
+	}
 	delete q;
 }
 
