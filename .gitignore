@@ -1,5 +1,9 @@
 # Prerequisites
 *.d
+*.vs
+*.pdb
+*.ilk
+*.idb
 
 # Compiled Object files
 *.slo
@@ -30,3 +34,6 @@
 *.exe
 *.out
 *.app
+
+Debug/
+.vs/
