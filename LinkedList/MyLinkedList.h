@@ -71,13 +71,12 @@ public:
 	void PushFront(TYPE newValue);
 	void PopFront();
 	void PushBack(TYPE newValue);
-	void PopBack();
+	virtual	void PopBack();
 	void RemoveByValue(TYPE value);
 	void Insert(int index, TYPE newValue);
-	virtual TYPE Get(int index) const;
+	TYPE Get(int index) const;
 	void Display() const;
 	bool isHeadEmpty() const;
-	
 };
 
 

@@ -48,6 +48,7 @@ OwnIterator& OwnIterator::operator++()
 
 MyLinkedList::MyLinkedList() 
 {
+	std::cout << "list created" << std::endl;
 	Node* ptr;
 	ptr = head;
 	head = nullptr;
@@ -82,6 +83,7 @@ MyLinkedList& MyLinkedList::operator=(const MyLinkedList& source)
 MyLinkedList::~MyLinkedList()
 {
 	Node* ptr;
+	std::cout << "List deleted" << endl;
 	ptr = head;
 	while (ptr != nullptr)
 	{

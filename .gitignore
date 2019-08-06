@@ -35,5 +35,5 @@
 *.out
 *.app
 
-Debug/
-.vs/
+/Debug/*
+/.vs/*
