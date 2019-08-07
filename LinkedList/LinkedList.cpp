@@ -26,14 +26,13 @@ int main()
 	v->pushBack(777);
 	v->pushBack(888);
 	*v1 = *v;
-	std::cout << v1->at(1);
 	//v->pushBack(999);
 	//v->pushBack(1000);
 	v1->pushBack(999);
 	//v2.swap(v3);
 	//v->swap(*v1);
-	//Vector<int>::Iterator it = v1->begin();
-	//v1->insert(it, 10000);
+	Vector<int>::Iterator it = v1->rBegin();
+	v1->insert(it-4, 1000);
 	//v1->erase(it);
 	//v->assign(it, it+3);
 	for (int i = 0; i < v->getSize(); i++)

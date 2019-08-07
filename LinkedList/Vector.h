@@ -8,6 +8,7 @@ class Vector
 public:
 	typedef T* Iterator;
 
+
 	Vector()
 		: buffer(new T[defaultVectorSize]),
 		capacity(defaultVectorSize),
@@ -33,6 +34,7 @@ public:
 	T& operator[](int index);
 	const T& operator[](int index) const;
 	T& at(int index);
+	T* data() noexcept;
 
 	//Capacity
 	void reserve(int newCapacity);
@@ -40,8 +42,6 @@ public:
 	int  getCapacity() const;
 	int getSize() const;
 	bool isEmpty() const;
-
-
 
 	//Modifiers
 	void clear();
@@ -56,15 +56,27 @@ public:
 	//Iterators
 	Iterator begin();
 	Iterator end();
+	const Iterator begin() const;
+	const Iterator end() const;
+	Iterator rBegin();
+	Iterator rEnd();
+	const Iterator rBegin() const;
+	const Iterator rEnd() const;
 
 private:
 	T* buffer;
 	int capacity;
 	int size;
 	static T defaultInsertable;
-
-
 };
+
+int Vector<int>::defaultInsertable = 0;
+
+template <class T>
+T* Vector<T>::data() noexcept
+{
+	return buffer;
+}
 
 template <class T>
 T& Vector<T>::at(int index)
@@ -138,12 +150,10 @@ void Vector<T>::assign(int newSize, const T& value)
 	}
 }
 
-int Vector<int>::defaultInsertable = 0;
-
 template <class T>
 typename Vector<T>::Iterator Vector<T>::erase(Iterator pos)
 {
-	if (pos >= end()) 
+	if (pos >= end())
 	{
 		return end();
 	}
@@ -221,6 +231,41 @@ typename Vector<T>::Iterator Vector<T>::end()
 	return buffer+getSize();
 }
 
+template<class T>
+typename const Vector<T>::Iterator Vector<T>::begin() const
+{
+	return buffer;
+}
+
+template<class T>
+typename const Vector<T>::Iterator Vector<T>::end() const
+{
+	return buffer + getSize();
+}
+
+template<class T>
+typename Vector<T>::Iterator Vector<T>::rBegin()
+{
+	return Iterator(end());
+}
+
+template<class T>
+typename const Vector<T>::Iterator Vector<T>::rBegin() const
+{
+	return Iterator(end());
+}
+
+template<class T>
+typename Vector<T>::Iterator Vector<T>::rEnd()
+{
+	return Iterator(begin());
+}
+
+template<class T>
+typename const Vector<T>::Iterator Vector<T>::rEnd() const
+{
+	return Iterator(begin());
+}
 
 template <class T>
 void Vector<T>::clear()
