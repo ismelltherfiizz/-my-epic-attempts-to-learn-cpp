@@ -34,6 +34,10 @@
 *.exe
 *.out
 *.app
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
 
 /Debug/*
 /.vs/*
+/LinkedList/Debug/*

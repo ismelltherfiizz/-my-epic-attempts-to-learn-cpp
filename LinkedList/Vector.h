@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+const int defaultVectorSize = 4;
 
 template <class T>
 class Vector
@@ -7,16 +8,27 @@ class Vector
 public:
 	typedef T* Iterator;
 
-	Vector();
-	~Vector();
-	Vector(int size);
+	Vector()
+		: buffer(new T[defaultVectorSize]),
+		capacity(defaultVectorSize),
+		size(0)
+	{ }
+
+	Vector(int n) 
+		: buffer(new T[n]),
+		capacity(n),
+		size(0)
+	{ }
+
+	Vector(const Vector& source);
+
 
 	int  getCapacity() const;
 	int getSize() const;
 	bool isEmpty() const;
 
-	T& front();
-	T& back();
+	T& front() const;
+	T& back() const;
 
 	void pushBack(const T& value); //
 	void popBack();
@@ -28,7 +40,7 @@ public:
 	void clear();
 	T& operator[](int index);
 	Vector<T>& operator*();
-	Vector<T>& operator=(const Vector<T>& v);
+	Vector<T>& operator=(const Vector<T>& source);
 
 	Iterator begin();
 	Iterator end();
@@ -42,35 +54,16 @@ private:
 };
 
 template <class T>
-Vector<T>& Vector<T>::operator*()
+Vector<T>::Vector(const Vector& source)
 {
-	return this;
+	*this = source;
 }
-
 
 template <class T>
-Vector<T>::Vector()
+Vector<T>& Vector<T>::operator*()
 {
-	capacity = 0;
-	size = 0;
-	buffer = 0;
+	return *this;
 }
-
-template<class T>
-Vector<T>::~Vector()
-{
-	delete[] buffer;
-}
-
-template<class T>
-Vector<T>::Vector(int newSize)
-{
-	size = newSize;
-	capacity = newSize;
-	buffer = new T[newSize];
-}
-
-
 
 template<class T>
 T& Vector<T>::operator[](int index)
@@ -80,13 +73,21 @@ T& Vector<T>::operator[](int index)
 
 
 template<class T>
-Vector<T>& Vector<T>::operator=(const Vector<T>& v)
+Vector<T>& Vector<T>::operator=(const Vector<T>& source)
 {
+	if (this == &source)
+	{
+		return *this;
+	}
 	delete[] buffer;
-	size = v.size;
-	capacity = v.capacity;
+	size = source.size;
+	capacity = source.capacity;
 	buffer = new T[size];
-
+	for (int i = 0; i < size; i++)
+	{
+		buffer[i] = source.buffer[i];
+	}
+	return *this;
 }
 
 template<class T>
@@ -107,6 +108,7 @@ void Vector<T>::clear()
 {
 	capacity = 0;
 	size = 0;
+	delete[] buffer;
 	buffer = nullptr;
 }
 
@@ -121,14 +123,17 @@ void Vector<T>::popBack()
 template<class T>
 void Vector<T>::reserve(int newCapacity)
 {
-	T* newBuffer = new T[newCapacity];
-	for (int i = 0; i < size; i++)
+	if (newCapacity>=capacity)
 	{
-		newBuffer[i] = buffer[i];
+		T* newBuffer = new T[newCapacity];
+		for (int i = 0; i < size; i++)
+		{
+			newBuffer[i] = buffer[i];
+		}
+		capacity = newCapacity;
+		delete[] buffer;
+		buffer = newBuffer;
 	}
-	capacity = newCapacity;
-	delete[] buffer;
-	buffer = newBuffer;
 }
 
 template <class T>
@@ -142,7 +147,7 @@ void Vector<T>::resize(int newSize)
 template <class T>
 void Vector<T>::pushBack(const T& value)
 {
-	if (size >= capacity)
+	if (size + 1 >= capacity)
 	{
 		reserve(capacity + 1);
 	}
@@ -157,13 +162,13 @@ bool Vector<T>::isEmpty() const
 }
 
 template<class T>
-T& Vector<T>::front()
+T& Vector<T>::front() const
 {
 	return buffer[0];
 }
 
 template<class T>
-T& Vector<T>::back()
+T& Vector<T>::back() const
 {
 	return buffer[size - 1];
 }
