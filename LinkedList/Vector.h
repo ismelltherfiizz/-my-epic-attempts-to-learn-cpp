@@ -1,6 +1,4 @@
-#pragma once
-#include <iostream>
-const int defaultVectorSize = 4;
+﻿#pragma once
 
 template <class T>
 class Vector
@@ -10,16 +8,29 @@ public:
 
 
 	Vector()
-		: buffer(new T[defaultVectorSize]),
-		capacity(defaultVectorSize),
-		size(0)
+		: buffer(new T[defaultVectorCapacity]),
+		capacity(defaultVectorCapacity),
+		size(0), 
+		defaultInsertable(0)
 	{ }
 
 	Vector(int n) 
 		: buffer(new T[n]),
 		capacity(n),
-		size(0)
+		size(0),
+		defaultInsertable(0)
 	{ }
+	Vector(int n, T defaultInsertable)
+		: buffer(new T[n]),
+		capacity(n),
+		size(0),
+		defaultInsertable(defaultInsertable)
+	{ }
+	
+	~Vector()
+	{
+		clear();
+	}
 
 	Vector(const Vector& source);
 
@@ -42,6 +53,7 @@ public:
 	int  getCapacity() const;
 	int getSize() const;
 	bool isEmpty() const;
+	int maxSize();
 
 	//Modifiers
 	void clear();
@@ -64,13 +76,21 @@ public:
 	const Iterator rEnd() const;
 
 private:
-	T* buffer;
+	T* buffer = nullptr;
 	int capacity;
 	int size;
-	static T defaultInsertable;
+	T defaultInsertable;
+	static int defaultVectorCapacity;
 };
 
-int Vector<int>::defaultInsertable = 0;
+template <class T>
+int Vector<T>::maxSize()
+{
+	return std::numeric_limits<int>::max();
+}
+
+template <class T>
+int Vector<T>::defaultVectorCapacity = 0;
 
 template <class T>
 T* Vector<T>::data() noexcept
@@ -94,6 +114,14 @@ T& Vector<T>::at(int index)
 template <class T>
 typename Vector<T>::Iterator Vector<T>::insert(Iterator pos, const T& value)
 {
+	if (pos >= end())
+	{
+		return end();
+	}
+	if (pos < begin())
+	{
+		return begin();
+	}
 	T* newBuffer = new T[size + 1];
 	int i = 0;
 	for (i; buffer + i != pos; i++)
@@ -156,6 +184,10 @@ typename Vector<T>::Iterator Vector<T>::erase(Iterator pos)
 	if (pos >= end())
 	{
 		return end();
+	}
+	if (pos < begin())
+	{
+		return begin();
 	}
 	T* newBuffer = new T[size-1];
 	int i = 0;
@@ -281,7 +313,15 @@ void Vector<T>::clear()
 template<class T>
 void Vector<T>::popBack()
 {
-	size--;
+	T* newBuffer = new T[--size];
+
+	for (int i = 0; i < size; i++)
+	{
+		newBuffer[i] = buffer[i];
+	}
+
+	delete[] buffer;
+	buffer = newBuffer;
 }
 
 template<class T>
@@ -327,6 +367,7 @@ void Vector<T>::pushBack(const T& value)
 	}
 	buffer[size++] = value;
 }
+
 
 
 template <class T>
