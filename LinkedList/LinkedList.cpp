@@ -25,7 +25,6 @@ int main()
 	v->pushBack(666);
 	v->pushBack(777);
 	v->pushBack(888);
-	v->popBack();
 	*v1 = *v;
 	//v->pushBack(999);
 	//v->pushBack(1000);
@@ -34,27 +33,30 @@ int main()
 	v3 = v2;
 	//v2.swap(v3);
 	//v->swap(*v1);
-	Vector<int>::Iterator it = v1->rBegin();
-	v1->insert(it - 4, 1000);
-	//v1->erase(it);
+	Vector<int>::Iterator it = v1->rEnd();
+	//v1->insert(it - 4, 1000);
+	v1->erase(it+1);
 	//v->assign(it, it+3);
 	cout << v->maxSize() << endl;
-	for (int i = 0; i < v->getSize(); i++)
+	std::cout << "v:" <<endl;
+	for (size_t i = 0; i < v->getSize(); i++)
 	{
 		std::cout << (*v)[i] << endl;
 	}
-	for (int i = 0; i < v1->getSize(); i++)
+	std::cout << "v1:" << endl;
+	for (size_t i = 0; i < v1->getSize(); i++)
 	{
 		std::cout << (*v1)[i] << endl;
 	}
 
-	std::cout << endl;
+	//std::cout << "v2:" << endl;
 
 	//for (int i = 0; i < v2.getSize(); i++)
 	//{
 	//	std::cout << v2[i] << endl;
 	//}
 	/*
+	std::cout << "v3:" <<endl;
 	for (int i = 0; i < v3.getSize(); i++)
 	{
 		std::cout << v3[i] << endl;

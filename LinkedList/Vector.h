@@ -14,13 +14,13 @@ public:
 		defaultInsertable(0)
 	{ }
 
-	Vector(int n) 
+	Vector(size_t n) 
 		: buffer(new T[n]),
 		capacity(n),
 		size(0),
 		defaultInsertable(0)
 	{ }
-	Vector(int n, T defaultInsertable)
+	Vector(size_t n, T defaultInsertable)
 		: buffer(new T[n]),
 		capacity(n),
 		size(0),
@@ -36,24 +36,28 @@ public:
 
 	Vector<T>& operator=(const Vector<T>& source);
 
-	void assign(int newSize, const T& value);
+	void assign(size_t newSize, const T& value);
 	void assign(Iterator first, Iterator last);
 
 	//Element access
-	T& front() const;
-	T& back() const;
+	T& front();
+	T& back();
+	const T& front() const;
+	const T& back() const;
 	T& operator[](int index);
 	const T& operator[](int index) const;
 	T& at(int index);
+	const T& at(int index) const;
 	T* data() noexcept;
+	const T* data() const noexcept;
 
 	//Capacity
-	void reserve(int newCapacity);
+	void reserve(size_t newCapacity);
 	void shrinkToFit();
-	int  getCapacity() const;
-	int getSize() const;
+	size_t  getCapacity() const;
+	size_t getSize() const;
 	bool isEmpty() const;
-	int maxSize();
+	size_t maxSize();
 
 	//Modifiers
 	void clear();
@@ -61,7 +65,8 @@ public:
 	void popBack();
 	Iterator insert(Iterator pos, const T& value);
 	Iterator erase(Iterator pos);
-	void resize(int newSize);
+	void resize(size_t newSize);
+	void resize(size_t count, const T& value);
 	void swap(Vector& other);
 
 
@@ -77,20 +82,21 @@ public:
 
 private:
 	T* buffer = nullptr;
-	int capacity;
-	int size;
+	size_t capacity;
+	size_t size;
 	T defaultInsertable;
-	static int defaultVectorCapacity;
+	static size_t defaultVectorCapacity;
 };
 
 template <class T>
-int Vector<T>::maxSize()
-{
-	return std::numeric_limits<int>::max();
-}
+size_t Vector<T>::defaultVectorCapacity = 2;
 
 template <class T>
-int Vector<T>::defaultVectorCapacity = 0;
+size_t Vector<T>::maxSize()
+{
+	return std::numeric_limits<size_t>::max();
+}
+
 
 template <class T>
 T* Vector<T>::data() noexcept
@@ -99,7 +105,26 @@ T* Vector<T>::data() noexcept
 }
 
 template <class T>
+const T* Vector<T>::data() const noexcept
+{
+	return buffer;
+}
+
+template <class T>
 T& Vector<T>::at(int index)
+{
+	if (index < size)
+	{
+		return buffer[index];
+	}
+	else
+	{
+		throw "index is out of range!";
+	}
+}
+
+template <class T>
+const T& Vector<T>::at(int index) const
 {
 	if (index < size)
 	{
@@ -123,7 +148,7 @@ typename Vector<T>::Iterator Vector<T>::insert(Iterator pos, const T& value)
 		return begin();
 	}
 	T* newBuffer = new T[size + 1];
-	int i = 0;
+	size_t i = 0;
 	for (i; buffer + i != pos; i++)
 	{
 		*(newBuffer + i) = *(buffer + i);
@@ -169,7 +194,7 @@ void Vector<T>::assign(Iterator first, Iterator last)
 }
 
 template <class T>
-void Vector<T>::assign(int newSize, const T& value)
+void Vector<T>::assign(size_t newSize, const T& value)
 {
 	resize(newSize);
 	for (int i = 0; i < size; i++)
@@ -189,19 +214,18 @@ typename Vector<T>::Iterator Vector<T>::erase(Iterator pos)
 	{
 		return begin();
 	}
-	T* newBuffer = new T[size-1];
-	int i = 0;
+	T* newBuffer = new T[size--];
+	size_t i = 0;
 	for (i; buffer+i != pos; i++)
 	{
 		*(newBuffer + i) = *(buffer + i);
 	}
-	for (i; i < size; i++)
+	for (i; i <= size; i++)
 	{
 		*(newBuffer+i) = *(buffer + (i+1));
 	}
 	delete[] buffer;
 	buffer = newBuffer;
-	size--;
 	return pos;
 }
 
@@ -244,7 +268,7 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& source)
 	capacity = source.capacity;
 
 	buffer = new T[size];
-	for (int i = 0; i < size; i++)
+	for (size_t i = 0; i < size; i++)
 	{
 		buffer[i] = source.buffer[i];
 	}
@@ -278,25 +302,25 @@ typename const Vector<T>::Iterator Vector<T>::end() const
 template<class T>
 typename Vector<T>::Iterator Vector<T>::rBegin()
 {
-	return Iterator(end());
+	return end() - 1;
 }
 
 template<class T>
 typename const Vector<T>::Iterator Vector<T>::rBegin() const
 {
-	return Iterator(end());
+	return end() - 1;
 }
 
 template<class T>
 typename Vector<T>::Iterator Vector<T>::rEnd()
 {
-	return Iterator(begin());
+	return begin() - 1;
 }
 
 template<class T>
 typename const Vector<T>::Iterator Vector<T>::rEnd() const
 {
-	return Iterator(begin());
+	return begin() - 1;
 }
 
 template <class T>
@@ -313,9 +337,8 @@ void Vector<T>::clear()
 template<class T>
 void Vector<T>::popBack()
 {
-	T* newBuffer = new T[--size];
-
-	for (int i = 0; i < size; i++)
+	T* newBuffer = new T[size--];
+	for (size_t i = 0; i < size; i++)
 	{
 		newBuffer[i] = buffer[i];
 	}
@@ -325,12 +348,12 @@ void Vector<T>::popBack()
 }
 
 template<class T>
-void Vector<T>::reserve(int newCapacity)
+void Vector<T>::reserve(size_t newCapacity)
 {
 	if (newCapacity>capacity)
 	{
 		T* newBuffer = new T[newCapacity];
-		for (int i = 0; i < size; i++)
+		for (size_t i = 0; i < size; i++)
 		{
 			newBuffer[i] = buffer[i];
 		}
@@ -341,7 +364,7 @@ void Vector<T>::reserve(int newCapacity)
 }
 
 template <class T>
-void Vector<T>::resize(int newSize)
+void Vector<T>::resize(size_t newSize)
 {
 	reserve(newSize);
 	if(size>newSize)
@@ -357,6 +380,22 @@ void Vector<T>::resize(int newSize)
 	}
 }
 
+template <class T>
+void Vector<T>::resize(size_t newSize, const T& value)
+{
+	reserve(newSize);
+	if (size > newSize)
+	{
+		size = newSize;
+	}
+	else
+	{
+		for (size; size < newSize; size++)
+		{
+			buffer[size] = value;
+		}
+	}
+}
 
 template <class T>
 void Vector<T>::pushBack(const T& value)
@@ -377,25 +416,37 @@ bool Vector<T>::isEmpty() const
 }
 
 template<class T>
-T& Vector<T>::front() const
+T& Vector<T>::front()
 {
 	return buffer[0];
 }
 
 template<class T>
-T& Vector<T>::back() const
+T& Vector<T>::back()
 {
 	return buffer[size - 1];
 }
 
 template<class T>
-int Vector<T>::getCapacity() const
+const T& Vector<T>::front() const
+{
+	return buffer[0];
+}
+
+template<class T>
+const T& Vector<T>::back() const
+{
+	return buffer[size - 1];
+}
+
+template<class T>
+size_t Vector<T>::getCapacity() const
 {
 	return capacity;
 }
 
 template <class T>
-int Vector<T>::getSize() const
+size_t Vector<T>::getSize() const
 {
 	return size;
 }
