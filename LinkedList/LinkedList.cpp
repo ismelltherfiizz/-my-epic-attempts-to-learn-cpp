@@ -7,51 +7,58 @@
 
 #include <algorithm>
 #include <list>
-
+#include "ListDerived.h"
+#include <new>
+#include <vector>
+#include "Vector.h"
 int main()
 {
-	std::list<int> l;
+	Vector<int>* v = new Vector<int>;
+	Vector<int>* v1 = new Vector<int>;
+	Vector<int> v2;
+	Vector<int> v3;
+	//Vector<int> v;
+	v2.pushBack(666);
+	v2.pushBack(777);
+	v2.pushBack(888);
+	v3.pushBack(0);
+	v->pushBack(666);
+	v->pushBack(777);
+	v->pushBack(888);
+	*v1 = *v;
+	//v->pushBack(999);
+	//v->pushBack(1000);
+	v1->pushBack(999);
 
-	MyLinkedList List;
-	MyLinkedList List1;
-	Queue* q = new Queue();
-	q->Push(200);
-	q->Push(150);
-	q->Push(100);
-	//q.Pop();
-	List.PushFront(15);
-	List.PushFront(45);
-	List.PushFront(66);
-	List.Insert(0, 666);
-	List.PushBack(777);
-	List.PushBack(888);
-	List.PopBack();
-	//List.Insert(4, 1000);
-	List1 = List;
-	//List1.PushFront(999);
-	//List.Get(0);
-	//List.PopFront();
-	List.Display();
-	List1.Display();
-	q->Display();
-	//q.Display();
-	//std::cout << List.Get(0) << std::endl << List.Get(1);
-	std::cout << "front is : " << q->Front() << std::endl;
-	//delete List;
-
-	
-
-
-	int n1 = 15;
-	auto findResult = std::find(List.begin(), List.end(), n1);
-	if(findResult != nullptr)
+	v3 = v2;
+	//v2.swap(v3);
+	//v->swap(*v1);
+	Vector<int>::Iterator it = v1->rEnd();
+	//v1->insert(it - 4, 1000);
+	v1->erase(it+1);
+	//v->assign(it, it+3);
+	cout << v->maxSize() << endl;
+	std::cout << "v:" <<endl;
+	for (size_t i = 0; i < v->getSize(); i++)
 	{
-		std::cout << "list does have " << n1 << '\n';
+		std::cout << (*v)[i] << endl;
 	}
-	else
+	std::cout << "v1:" << endl;
+	for (size_t i = 0; i < v1->getSize(); i++)
 	{
-		std::cout << "list doesn't have " << n1 << '\n';
+		std::cout << (*v1)[i] << endl;
 	}
-	delete q;
+
+	//std::cout << "v2:" << endl;
+
+	//for (int i = 0; i < v2.getSize(); i++)
+	//{
+	//	std::cout << v2[i] << endl;
+	//}
+	/*
+	std::cout << "v3:" <<endl;
+	for (int i = 0; i < v3.getSize(); i++)
+	{
+		std::cout << v3[i] << endl;
+	}*/
 }
-
