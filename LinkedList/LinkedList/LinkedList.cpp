@@ -17,11 +17,11 @@ int main()
 	Vector<int>* v1 = new Vector<int>;
 	Vector<int> v2;
 	Vector<int> v3;
+	Vector<int> v4{ 1, 2, 3, 4, 5 };
 	//Vector<int> v;
 	v2.pushBack(666);
-	v2.pushBack(777);
+	v2.pushBack(777); 
 	v2.pushBack(888);
-	v3.pushBack(0);
 	v->pushBack(666);
 	v->pushBack(777);
 	v->pushBack(888);
@@ -29,8 +29,7 @@ int main()
 	//v->pushBack(999);
 	//v->pushBack(1000);
 	v1->pushBack(999);
-
-	v3 = v2;
+	v3 = { 1, 2, 3 };
 	//v2.swap(v3);
 	//v->swap(*v1);
 	Vector<int>::Iterator it = v1->rEnd();
@@ -55,10 +54,18 @@ int main()
 	//{
 	//	std::cout << v2[i] << endl;
 	//}
-	/*
+	
 	std::cout << "v3:" <<endl;
-	for (int i = 0; i < v3.getSize(); i++)
+	for (size_t i = 0; i < v3.getSize(); i++)
 	{
 		std::cout << v3[i] << endl;
-	}*/
+	}
+
+
+	std::cout << "v4:" << endl;
+
+for (size_t i = 0; i < v4.getSize(); i++)
+{
+	std::cout << v4[i] << endl;
+}
 }
