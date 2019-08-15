@@ -20,13 +20,28 @@ public:
 		size(0),
 		defaultInsertable(0)
 	{ }
+
 	Vector(size_t n, T defaultInsertable)
 		: buffer(new T[n]),
 		capacity(n),
 		size(0),
 		defaultInsertable(defaultInsertable)
 	{ }
-	
+
+	Vector(const std::initializer_list<T>& list)
+		: buffer(new T[list.size()]),
+		capacity(list.size()),
+		size(list.size()),
+		defaultInsertable(0)
+	{ 
+		int count = 0;
+		for (auto& element : list)
+		{
+			buffer[count] = element;
+			++count;
+		}
+	}
+
 	~Vector()
 	{
 		clear();
@@ -35,6 +50,7 @@ public:
 	Vector(const Vector& source);
 
 	Vector<T>& operator=(const Vector<T>& source);
+	Vector<T>& operator=(const std::initializer_list<T>& list);
 
 	void assign(size_t newSize, const T& value);
 	void assign(Iterator first, Iterator last);
@@ -271,6 +287,24 @@ Vector<T>& Vector<T>::operator=(const Vector<T>& source)
 	for (size_t i = 0; i < size; i++)
 	{
 		buffer[i] = source.buffer[i];
+	}
+	return *this;
+}
+
+template<class T>
+Vector<T>& Vector<T>::operator=(const std::initializer_list<T>& list)
+{
+
+	delete[] buffer;
+	size = list.size();
+	capacity = list.size();
+	buffer = new T[size];
+
+	int count = 0;
+	for (auto& element : list)
+	{
+		buffer[count] = element;
+		++count;
 	}
 	return *this;
 }

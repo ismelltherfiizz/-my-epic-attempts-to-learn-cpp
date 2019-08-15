@@ -40,5 +40,9 @@
 
 /Debug/*
 /.vs/*
+LinkedList/LinkedList/Debug/*
 /LinkedList/Debug/*
 LinkedList.sln
+/allocator/Debug/*
+allocator/allocator/Debug/*
+allocator.sln
