@@ -152,7 +152,7 @@ int main()
 		std::cout << arr[i] << std::endl;
 	}
 	myFree(arr1);
-	int newSize = 18;
+	int newSize = 22;
 	arr = (int*)myRealloc(arr, sizeof(int)*newSize);
 	
 	for (int i = 0; i < newSize; i++)

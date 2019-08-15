@@ -46,3 +46,6 @@ LinkedList.sln
 /allocator/Debug/*
 allocator/allocator/Debug/*
 allocator.sln
+BinaryTree/BinaryTree/Debug/
+
+*.sln
