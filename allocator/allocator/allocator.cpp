@@ -42,7 +42,7 @@ void split(Block* fittingBlock, size_t size)
 
 void* myMalloc(size_t size)
 {
-	Block* curBlock, *prevBlock;
+	Block* curBlock;
 	if (!(freeList->size))
 	{
 		init();
@@ -51,7 +51,6 @@ void* myMalloc(size_t size)
 	curBlock = freeList;
 	while ((curBlock->size < size) || (curBlock->isFree == false) && (curBlock->nextBlock != nullptr))
 	{
-		prevBlock = curBlock;
 		curBlock = curBlock->nextBlock;
 		std::cout << "block checked" << std::endl;
 	}
@@ -79,7 +78,7 @@ void* myMalloc(size_t size)
 
 void merge()
 {
-	Block* curBlock, *prevBlock;
+	Block* curBlock;
 	curBlock = freeList;
 	while ((curBlock->nextBlock) != nullptr)
 	{
@@ -87,10 +86,11 @@ void merge()
 		{
 			curBlock->size += (curBlock->nextBlock->size) + sizeof(Block);
 			curBlock->nextBlock = curBlock->nextBlock->nextBlock;
+		}		
+		if (curBlock->nextBlock != nullptr)
+		{
+			curBlock = curBlock->nextBlock;
 		}
-		prevBlock = curBlock->nextBlock;
-		
-		if (curBlock->nextBlock != nullptr) curBlock = curBlock->nextBlock;
 		else return;
 	}
 }
@@ -103,7 +103,7 @@ void myFree(void* ptr)
 		Block* curBlock = static_cast<Block*>(ptr);
 		--curBlock;
 		curBlock->isFree = true;
-		merge();
+		//merge();
 		std::cout << "block is freed" << std::endl;
 	}
 	else std::cout << "provide a valid pointer" << std::endl;
@@ -152,7 +152,7 @@ int main()
 		std::cout << arr[i] << std::endl;
 	}
 	myFree(arr1);
-	int newSize = 20;
+	int newSize = 18;
 	arr = (int*)myRealloc(arr, sizeof(int)*newSize);
 	
 	for (int i = 0; i < newSize; i++)
