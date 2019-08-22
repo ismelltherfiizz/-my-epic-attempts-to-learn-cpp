@@ -10,7 +10,7 @@ struct Node
 
 };
 
-void InsertInternal(Node* newNode, Node* tree) //Dima skazal chto dlya tipov bol'she 8 bajt kopirovat' ukazatel' bystree, chem brat' na nego ssylku
+void InsertInternal(Node* newNode, Node* tree) //Dima skazal chto tipy bol'she 8 bajt kopirovat' bystree, chem brat' na nich ssylku
 {
 
 	if (tree->value < newNode->value)
@@ -89,7 +89,7 @@ void ShowPostOrder(Node* tree)
 }
 
 void DeleteWithChildren(Node*& tree) //chto eta funkciya delaet takogo, chto esli argumentom budet "Node* tree" obhody ne budut rabotat'?
-{						//Ponyal: sozdaet ukazatel', kotoryj ukazyvaet na tot zhe ob"ekt, potom udalyaet etot ob"ekt i obnulyaet ukazatel'-kopiyu, no ne obnulyaet ukazatel' real'nogo ob"ekta 
+{						//Ponyal: sozdaet ukazatel', kotoryj ukazyvaet na tot zhe ob"ekt, potom udalyaet etot ob"ekt i obnulyaet ukazatel'-kopiyu, no ne obnulyaet ishodnyi ukazatel'
 	if (tree != nullptr) //poetomu kogda funkciya obhoda na n-oj iteracii pytaetsya vytashchit' infu s pomoshch'yu etogo ukazatelya vyletaet error (konkretnee - read access violation, ibo pamyat' byla osvobozhdena i programma ne imeet prav eyo yuzat')
 	{
 		DeleteWithChildren(tree->leftChild);
