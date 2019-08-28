@@ -1,0 +1,3 @@
+﻿  template function.cpp
+C:\Users\mshkolnyy\Desktop\-my-epic-attempts-to-learn-cpp\template function\template function\template function.cpp(106,8): warning C4244:  'initializing': conversion from 'double' to 'int', possible loss of data
+  template function.vcxproj -> C:\Users\mshkolnyy\Desktop\-my-epic-attempts-to-learn-cpp\template function\Debug\template function.exe

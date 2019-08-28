@@ -22,26 +22,28 @@ class Tree
 	};
 public:
 	std::unique_ptr<Node> root;
-	std::unique_ptr<Node> nothing;
 
-	std::unique_ptr<Node>& FindByKey(std::unique_ptr<Node>& curRoot, const int key)
+	std::unique_ptr<Node>* FindByKey(std::unique_ptr<Node>& curRoot, const int key)
 	{
+		std::unique_ptr<Node>* ptrToUnique = nullptr;
 		if (curRoot->key == key)
 		{
-			return curRoot;
+			ptrToUnique = &curRoot;
+			return ptrToUnique;
 		}
 		else
 		{
 			for (auto& el : curRoot->children)
 			{
-				auto& n = FindByKey(el, key);
+				auto n = FindByKey(el, key);
 				if (n)
 				{
+					ptrToUnique = n;
 					std::cout << "root was found" << std::endl;
-					return n;
+					return ptrToUnique;
 				}
 			}
-			return nothing;
+			return ptrToUnique;
 		}
 	}
 
@@ -55,8 +57,8 @@ public:
 		}
 		else
 		{
-			auto& a = FindByKey(root, key);
-			if (!a)
+			auto a = FindByKey(root, key);
+			if (a == nullptr)
 			{
 				curRoot->children.emplace_back(std::move(newNode));
 			}
@@ -78,17 +80,17 @@ public:
 		}
 		else
 		{
-			auto& a = FindByKey(root, parentKey);
+			auto a = FindByKey(root, parentKey);
 			if (newKey != parentKey)
 			{
-			if (!a)
+			if (a == nullptr)
 			{
 				std::cout << "there's no such parent key : " << parentKey <<std::endl;
 				return;
 			}
 
-				auto& b = FindByKey(root, newKey);
-				if (b)
+				auto b = FindByKey(root, newKey);
+				if (b != nullptr)
 				{
 					std::cout << "the key already exists : " << newKey << std::endl;
 					std::cout << "Do you want to change the value?" << std::endl;
@@ -96,19 +98,19 @@ public:
 					std::cin >> answer;
 					if (answer == "y")
 					{
-						b->data = data;
+						(*a)->data = data;
 						std::cout << "value has changed" << std::endl;
 					}
 				}
 				else
 				{
 					std::cout << "the parent key exists " << newKey << std::endl;
-					a->children.emplace_back(std::move(newNode));
+					(*a)->children.emplace_back(std::move(newNode));
 				}
 			}
 			else
 			{
-				a->data = data;
+				(*a)->data = data;
 			}
 		}
 	}
@@ -139,18 +141,18 @@ public:
 
 	void DeleteByKey(const int key)
 	{
-		auto& curRoot = FindByKey(root, key); 
-		if (!curRoot)
+		auto curRoot = FindByKey(root, key); 
+		if (curRoot == nullptr)
 		{
 			std::cout << "there's no such key" << std::endl;
 		}
 		else
 		{
-			for (size_t i = 0; i < curRoot->children.size(); i++)
+			for (size_t i = 0; i < (*curRoot)->children.size(); i++)
 			{
-				DeleteInternal(curRoot->children[i]);
+				DeleteInternal((*curRoot)->children[i]);
 			}
-			curRoot.reset();
+			(*curRoot).reset();
 			std::cout << "deleted a node" << std::endl;
 		}
 	}
@@ -178,7 +180,10 @@ int main()
 	myTree.InsertByRoot(999, 11, myTree.root);
 	myTree.InsertByKey(555, 666, 1);
 	myTree.InsertByKey(51515, 1, 1);
-	//myTree.DeleteByKey(1);
+	myTree.DeleteByKey(1);
+	myTree.InsertByKey(51515, 1, 1);
+	myTree.InsertByRoot(999, 11, myTree.root);
+	myTree.InsertByKey(555, 666, 1);
 	myTree.Show(myTree.root);
 
 }
