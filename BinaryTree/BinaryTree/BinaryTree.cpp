@@ -10,7 +10,7 @@ struct Node
 
 };
 
-void InsertInternal(Node* newNode, Node* tree) //Dima skazal chto tipy bol'she 8 bajt kopirovat' bystree, chem brat' na nich ssylku
+void InsertInternal(Node* newNode, Node* tree) //Dima skazal chto tipy < 8 bajt kopirovat' bystree, chem brat' na nich ssylku
 {
 
 	if (tree->value < newNode->value)
