@@ -46,3 +46,12 @@ LinkedList.sln
 /allocator/Debug/*
 allocator/allocator/Debug/*
 allocator.sln
+BinaryTree/BinaryTree/Debug/
+
+*.sln
+
+lambda/lambda/Debug/
+
+template function/template function/Debug/
+
+BinaryTreeUniquePtr/BinaryTreeUniquePtr/Debug/
